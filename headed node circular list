@@ -1,0 +1,149 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int info;
+    struct node *link;
+};
+
+typedef struct node* NODE;
+
+NODE getnode()
+{
+    NODE x;
+    x = (NODE)malloc(sizeof(struct node));
+    
+    if (x == NULL)
+    {
+        printf("Not enough memory\n");
+        exit(0);
+    }
+    return x;
+}
+
+NODE insert_front(int item, NODE head)
+{
+    NODE temp, cur;
+    temp = getnode();
+    
+    temp->info = item;
+    cur = head->link;
+    head->link = temp;
+    temp->link = cur;
+    
+    return head;
+}
+
+NODE insert_rear(int item, NODE head)
+{
+    NODE temp, cur;
+    temp = getnode();
+    
+    temp->info = item;
+    cur = head->link;
+    
+    while (cur->link != head)
+    {
+        cur = cur->link;
+    }
+    cur->link = temp;
+    temp->link = head;
+    
+    return head;
+}
+
+NODE delete_rear(NODE head)
+{
+    NODE cur, prev;
+    
+    if (head->link == head)
+    {
+        printf("Empty list\n");
+        return head;
+    }
+    
+    prev = head;
+    cur = head->link;
+    
+    while (cur->link != head)
+    {
+        prev = cur;
+        cur = cur->link;
+    }
+    
+    prev->link = head;
+    printf("ITEM DELETED IS %d\n", cur->info);
+    free(cur);
+    
+    return head;
+}
+
+void display(NODE head)
+{
+    NODE cur;
+    if (head->link == head)
+    {
+        printf("\n\nEmpty list\n");
+        return;
+    }
+    cur = head->link;
+    while (cur != head)
+    {
+        printf("%d ", cur->info); // Add a space here
+        cur = cur->link;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    int item, choice, i;
+    NODE head = getnode(); // Initialize head
+    
+    head->link = head; // Circular list with a dummy node
+    
+    for (i = 0; i < 20; i++)
+    {
+        printf("\n\n1. Insert front\t 2. Insert rear\t 3. Delete front\t 4. Delete rear\t 5. Display\t 6. Exit\n");
+        scanf("%d", &choice);
+        
+        switch (choice)
+        {
+            case 1:
+                printf("\n\nItem to be inserted: ");
+                scanf("%d", &item);
+                head = insert_front(item, head);
+                break;
+                
+            case 2:
+                printf("\n\nItem to be inserted: ");
+                scanf("%d", &item);
+                head = insert_rear(item, head);
+                break;
+                
+            /*
+            case 3:
+                first = delete_front(first);
+                break;
+            */
+            
+            case 4:
+                head = delete_rear(head);
+                break;
+                
+            case 5:
+                display(head);
+                break;
+                
+            default:
+                exit(0);
+                break;
+        }
+    }
+    
+    // Free memory for all nodes (not implemented in this snippet)
+    
+    return 0;
+}
+ 
