@@ -1,0 +1,181 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<stdlib.h>
+
+struct node
+{
+    int info;
+    struct node *link;
+    
+};
+typedef struct node* NODE;
+
+NODE getnode()
+{
+    NODE x;
+    x=(NODE)malloc(sizeof(struct node));
+    
+    if(x==NULL)
+    {
+        printf("not enough memory");
+        exit(0);
+        
+        
+    }
+    return x;
+}
+
+NODE insert_front(int item,NODE first)
+{
+    NODE temp;
+    temp=getnode();
+    
+    temp->info=item;
+    temp->link=first;
+    return temp;    
+    
+}
+NODE insert_rear(int item,NODE first)
+{
+    NODE temp,cur;
+    temp=getnode();
+    
+    temp->info=item;
+    temp->link=NULL;
+    
+    if(first==NULL)
+    {
+        printf("\n\nempty list ");
+        return temp;
+        
+    }
+    cur=first;
+    while(cur!=NULL)
+    {
+        cur=cur->link;
+    
+    }
+    cur->link=temp;
+    
+    return first;
+    
+  
+    
+}
+
+NODE delete_rear(NODE first)
+{
+    NODE cur,prev;
+    if(first==NULL)
+    {
+        printf("empty list ");
+        return NULL;
+        
+    }
+    if(first->link==NULL)
+    {
+        printf("item deleted is =%d",first->info);
+        free(first);
+        return NULL;
+        
+    }
+    cur=first;
+    
+    while(cur->link!=NULL)
+    {
+        prev=cur;
+        cur=cur->link;
+        
+    }
+    prev->link=NULL;
+    printf("ITEM DELETED IS%d= ",cur->info);
+    free(prev);
+    return first;
+    
+    
+}
+NODE delete_front(NODE first)
+{
+    NODE cur;
+    if(first==NULL)
+    {
+        printf("\n\nempty list ");
+        return NULL;
+        
+    }
+    if(first->link==NULL)
+    {
+        printf("\nitem deleted is =%d\n",first->info);
+        free(first);
+        return NULL;
+        
+    }
+    cur=first->link;
+    
+    
+    printf("\nITEM DELETED IS%d=\n ",first->info);
+    free(first);
+    return cur;
+    
+    
+}
+void display(NODE first)
+{
+    NODE cur;
+    if(first==NULL)
+    {
+        printf("\n\nempty node\n");
+        return;
+    }
+    cur=first;
+    while(cur->link!=NULL)
+    {
+        printf("%d",cur->info);
+        cur=cur->link;
+        
+    }
+    printf("\nNULL\n");
+}
+
+void main()
+{
+    int item,choice;
+    NODE first;
+    
+    for(;;)
+    {
+        printf("\n\n1.insert front\t 2.insert rear\t 3.delete front\t 4.delete rear\t 5.display\t 6.exit\n");
+        scanf("%d",&choice);
+        
+        switch(choice)
+        {
+            case 1:
+                    printf(" \n\nitem to be inserted\n ");
+                    scanf("%d",&item);
+                    
+                    first=insert_front(item,first);
+                    break;
+                    
+            case 2:
+                    printf(" \n\nitem to be inserted\n ");
+                    scanf("%d",&item);
+                    
+                    first=insert_rear(item,first);
+                    break;
+            
+            case 3:
+                    first=delete_front(first);
+                    break;
+            case 4:
+                    first=delete_rear(first);
+                    break;           
+                    
+            case 5:
+                    display(first);
+                    break;
+            default:exit(0);
+                    break;
+        }
+    }
+}
+    
